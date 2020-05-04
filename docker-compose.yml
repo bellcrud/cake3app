@@ -3,7 +3,7 @@ services:
   php:
     build:
      context: .
-     dockerfile: ./docker/Dockerfile
+     dockerfile: ./Dockerfile
     volumes:
       - ./sample:/var/www/html/sample
       - ./docker/app/php.ini:/usr/local/lib/php.ini
