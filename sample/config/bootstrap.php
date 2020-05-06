@@ -70,8 +70,15 @@ use Cake\Utility\Security;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
+    // 定数ファイルを読み込み
+    if (isset($_SERVER["CAKE_ENV"]) && $_SERVER["CAKE_ENV"] == "develop"){
+        Configure::load("const_develop");
+    } else {
+        Configure::load("const_production");
+    }
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }

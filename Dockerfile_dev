@@ -18,4 +18,4 @@ RUN composer install --no-interaction
 RUN chmod -R a+w ./logs/error.log
 COPY ./docker/app/httpd.conf /etc/apache2/httpd.conf
 
-CMD sed -i -e "s/Listen 80/Listen $PORT/g" /etc/apache2/httpd.conf && httpd -DFOREGROUND
+CMD ["httpd", "-D", "FOREGROUND"]

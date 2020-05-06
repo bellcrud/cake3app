@@ -4,3 +4,4 @@
 .idea/misc.xml
 .idea/php.xml
 .idea/vcs.xml
+postgres/data/*

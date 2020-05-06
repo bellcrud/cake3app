@@ -3,22 +3,38 @@ services:
   php:
     build:
      context: .
-     dockerfile: ./Dockerfile
+     dockerfile: ./Dockerfile_dev
     volumes:
       - ./sample:/var/www/html/sample
       - ./docker/app/php.ini:/usr/local/lib/php.ini
-      - ./docker/app/httpd.conf:/etc/apache2/httpd.conf
+      - ./docker/app/dev/httpd.conf:/etc/apache2/httpd.conf
     tty: true
     ports:
      - 80:80
-  mysql:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cake_php
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --explicit_defaults_for_timestamp=1
+  postgresql:
+    image: postgres:10.5
+    container_name: postgresql
     ports:
-      - 3306:3306
+      - 5433:5432
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      - ./postgres/data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    hostname: postgres
+    restart: always
+    user: root
+  pgadmin4:
+    image: dpage/pgadmin4:3.3
+    container_name: pgadmin4
+    ports:
+      - 8080:80
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin/storage
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: root
+    hostname: pgadmin4
+    restart: always
